@@ -1,4 +1,7 @@
+* 🚚 حمل‌ونقل پویا بر اساس وزن + تحویل حضوری اصفهان + گسیل رایگان خانه اصفهان
+*/ add_filter('woocommerce_package_rates', 'vereskala_dynamic_shipping_weight', 20, 2);
 
+function vereskala_dynamic_shipping_weight($rates, $package) {
 $customer_city     = WC()->customer->get_shipping_city();
 $customer_address1 = WC()->customer->get_shipping_address_1();
 $customer_address2 = WC()->customer->get_shipping_address_2();
