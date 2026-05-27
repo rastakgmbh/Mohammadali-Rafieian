@@ -1,0 +1,30 @@
+// انتقال کاربر به برگه نام‌نویسی به جای تسویه‌حساب
+add_action('template_redirect', function() {
+    if (is_checkout() && !is_user_logged_in()) {
+        // آدرس برگه نام‌نویسی (مثلا همان حساب کاربری ووکامرس)
+        $register_page = get_permalink( get_option('woocommerce_myaccount_page_id') );
+
+        wp_redirect($register_page);
+        exit;
+    }
+});
+
+add_filter( 'get_comment_author', function( $author, $comment_ID, $comment ) {
+
+    // بررسی اینکه کاربر واردشده است یا خیر
+    if ( $comment->user_id ) {
+        $user = get_userdata( $comment->user_id );
+
+        // اگر نام کوچک کاربر وجود دارد فقط همان نمایش داده می‌شود
+        if ( $user && ! empty( $user->first_name ) ) {
+            return $user->first_name;
+        }
+
+        // اگر نام کوچک خالی بود، همان نام ثبت شده قبلی نمایش داده شود
+        return $author;
+    }
+
+    // اگر کاربر وارد نشده (مهمان بود)، متن دلخواه نمایش داده شود
+    return '👤 دوست ورسکالا';
+
+}, 10, 3 );
